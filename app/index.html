@@ -1,3 +1,48 @@
 <!DOCTYPE html>
-<h1>Hello World</h1>
-It's me!!
+<!--<script src="rover.js"></script>-->
+<script src="//www.WebRTC-Experiment.com/RecordRTC.js"></script>
+<div id = "title" align = "middle">
+<h1> Rover </h1>
+</div>
+<div id = "upload">
+<p>Upload a pre-recorded audio file...</p>
+
+</div>
+
+<div id = "record">
+    <p>... or record audio now.</p>
+    <button onclick="startRec()">Start recording</button>
+    <button onclick="endRec()">Finish recording</button>
+</div>
+
+<audio id="player" controls></audio>
+<script>
+    
+    
+
+    var player = document.getElementById('player');
+
+    var handleSuccess = function(stream) {
+    if (window.URL) {
+      player.src = window.URL.createObjectURL(stream);
+    } else {
+      player.src = stream;
+    }
+    };
+    
+    var options = {mimeType: 'audio/webm;codecs=vp9'}    
+    mediaRecorder = new MediaRecorder(stream, options)
+
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+      .then(handleSuccess)
+    
+    function startRec() {
+        window.alert("started recording")
+        mediaRecorder.start();
+    }
+    
+    function endRec() {
+        window.alert("stopped recording")
+        mediaRecorder.stop();
+    }
+</script>
