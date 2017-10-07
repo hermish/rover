@@ -1,3 +1,22 @@
+# PROJECT FILES
+.idea/
+
+# DATA
+output/
+output.txt
+
+# CREDENTIALS
+scraping/credentials.txt
+
+# OSX GENERATED FILES
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
