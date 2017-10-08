@@ -1,6 +1,17 @@
 import scholarly
 
 
+def main(func):
+    """
+    :param func: (func) the function to wrap
+    :return: (func) a function which only runs if file itself is run
+    """
+    def wrapped(*args, **kwargs):
+        if __name__ == '__main__':
+            func()
+    return wrapped
+
+
 def return_scholar(parsed, max_results):
     """
     :param parsed: [str] a list of import words which need to be searched
@@ -18,3 +29,15 @@ def return_scholar(parsed, max_results):
             summary['title'], summary['author'], summary['abstract'], summary['url']])
         max_results -= 1
     return list_of_articles
+
+
+@main
+def test():
+    """
+    Main method mostly for testing
+    :return: None
+    """
+    pass
+
+
+test()
