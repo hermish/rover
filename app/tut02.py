@@ -277,7 +277,7 @@ class StringGenerator(object):
 
         upload_audio(CREDENTIALS, BUCKET_NAME, file_name)
         os.remove(file_name)
-        time.sleep(30)
+        # time.sleep(30)
 
         self.variable = main(BUCKET_NAME, file_name, 44100, 0)
 
