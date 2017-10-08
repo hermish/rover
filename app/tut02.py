@@ -14,7 +14,12 @@ class StringGenerator(object):
         <head>
         <title>Rover</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script language = "javascript">
+        <script type = "text/javascript">
+
+        $( document ).ready(function() {
+            var x = document.getElementById("form1");
+            x.style.display = "none";
+        });
 
         function buttonFunction() {
           document.getElementById('button1').style.background = "#73A9BF";
@@ -29,6 +34,12 @@ class StringGenerator(object):
           document.getElementById('button1').setAttribute( "onClick", "javascript: buttonFunction();" );
 
           window.location = "pagethree";
+        }
+
+        function buttonFunctionThree() {
+            var x = document.getElementById("form1");
+            x.style.display = "block";
+
         }
 
         </script>
@@ -70,6 +81,14 @@ class StringGenerator(object):
 
         }
 
+        form {
+        margin: 0 auto;
+        text-align: center;
+        }
+
+        input[type=button], input[type=submit], input[type=reset] {
+
+        }
 
         </style>
         </head>
@@ -77,9 +96,10 @@ class StringGenerator(object):
         <h1 id="one"><b>ROVER</b></h1>
         <h2 id="two">It's like Shazam... for scholars!</h2>
         <button id="button1" onclick="buttonFunction()"><b>RECORD AUDIO</b></button><br>
-<form action="upload" method="post" enctype="multipart/form-data">
-<input type="file" name="myFile"/><br />
-<input type="submit"/>
+        <button id="button2" onclick="buttonFunctionThree()"><b>UPLOAD AUDIO</b></button><br>
+        <form action="upload" method="post" enctype="multipart/form-data" id="form1">
+        <input type="file" name="myFile"/><br />
+        <input type="submit" onclick="buttonFunctionTwo()"/>
         </form>
         </body>
         </html>
@@ -114,6 +134,8 @@ class StringGenerator(object):
         <script language = "javascript">
 
         $( document ).ready(function() {
+        var x = document.getElementById("form1");
+        x.style.display = "none";
         $('html, body').animate({ scrollTop: $(document).height() }, 1200);
         });
 
@@ -231,6 +253,10 @@ class StringGenerator(object):
         <h1 id="one"><b>ROVER</b></h1>
         <h2 id="two">It's like Shazam... for scholars!</h2>
         <button id="button1" onclick="buttonFunction()"><b>RECORD AUDIO</b></button>
+        <button id="button2" onclick="buttonFunctionThree()"><b>UPLOAD AUDIO</b></button><br>
+        <form action="upload" method="post" enctype="multipart/form-data" id="form1">
+        <input type="file" name="myFile"/><br />
+        <input type="submit" onclick="buttonFunctionTwo()"/>
         <h3 id="three">ARTICLES</h3>
         <div class = block>
         <div class = article><a href='"""+linka+"""'><div class = art><div class = t><b>"""+titlea+"""</b></div><div class = author>"""+authora+"""</div><div class = a>"""+abstracta+"""</div></a></div>
