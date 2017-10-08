@@ -40,6 +40,3 @@ def test():
     :return: None
     """
     pass
-
-
-test()
