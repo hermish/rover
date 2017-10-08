@@ -9,6 +9,7 @@ from google.cloud import language
 ENV_VAR = 'GOOGLE_APPLICATION_CREDENTIALS'
 
 
+
 def make_verbose(before, after):
     """
     :param before: (bool) whether the arguments should be printed before the

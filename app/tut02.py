@@ -26,6 +26,7 @@ class StringGenerator(object):
           document.getElementById('button1').style.color = "#48859D";
           document.getElementById('button1').innerHTML = "<b>RECORD AUDIO</b>";
           document.getElementById('button1').setAttribute( "onClick", "javascript: buttonFunction();" );
+
           window.location = "pagethree";
         }
 
@@ -124,6 +125,7 @@ class StringGenerator(object):
         }
 
         </script>
+
         <style>
         @import url('https://fonts.googleapis.com/css?family=Questrial');
         </style>
@@ -166,6 +168,14 @@ class StringGenerator(object):
           margin: 0 auto;
           font-size: 200%;
 
+          font-family: 'Questrial';
+        }
+
+        h2 {
+          color: #284A57;
+          text-align: center;
+          font-size: 300%;
+          margin-top: 5%;
         }
 
         .art {
@@ -222,7 +232,6 @@ class StringGenerator(object):
         </body>
         </html>
         """
-
 
 
 
