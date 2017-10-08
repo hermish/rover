@@ -9,6 +9,7 @@ NUM_ARTICLES = 3
 
 # TEST CONSTANTS
 SAMPLE_BUCKET = 'rover1'
+SAMPLE_FILE3 = 'audio (5).ogg'
 SAMPLE_FILE2 = 'audio-file.flac'
 SAMPLE_FILE1 = 'sample.flac'
 
