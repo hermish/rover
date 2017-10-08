@@ -40,11 +40,9 @@ def main(func):
     :param func: (func) the function to wrap
     :return: (func) a function which only runs if file itself is run
     """
-
     def wrapped(*args, **kwargs):
         if __name__ == '__main__':
             func()
-
     return wrapped
 
 
@@ -149,7 +147,8 @@ def run():
     """
     # output = process_audio(SAMPLE_BUCKET, SAMPLE_FILE, 0)
     # output = terms_and_links(run_analyses(SAMPLE_STRING), QUERY)
-    # print(output)
-    pass
+    output = return_scholar(['machine', 'learning', 'communism'], 3)
+    print(output)
+
 
 run()
