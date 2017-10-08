@@ -91,7 +91,7 @@ def process_audio(credentials, bucket_name, filename, sample_rate, user_id):
     return result
 
 
-def upload_audio(credentials, bucket_name, filename, file):
+def upload_audio(credentials, bucket_name, filename):
     """
     Uploads a file to a given Cloud Storage bucket and returns the public url
     to the new object.
@@ -103,7 +103,7 @@ def upload_audio(credentials, bucket_name, filename, file):
     client = storage.Client()
     bucket = client.get_bucket(bucket_name)
     blob = bucket.blob(filename)
-    blob.upload_from_file(file, content_type='audio/flac')
+    blob.upload_from_filename(filename, content_type='audio/flac')
 
 
 def run_analyses(text, link_type):
@@ -162,11 +162,4 @@ def test():
     Main method mostly for testing
     :return: None
     """
-    import os
-
-    cwd = os.getcwd()  # Get the current working directory (cwd)
-    files = os.listdir(cwd)  # Get all the files in that directory
-    print("Files in '%s': %s" % (cwd, files))
-
-    file = io.open('f1507474912.flac', 'rb')
-    upload_audio('../credentials/RoverApp-2c2a3600d6d9.json', 'rover1', 'f1507474912.flac', file)
+    upload_audio('../credentials/RoverApp-2c2a3600d6d9.json', 'rover1', 'f1507478043.flac')
