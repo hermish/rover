@@ -13,6 +13,7 @@ class StringGenerator(object):
         return """<html>
         <head>
         <title>Rover</title>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script language = "javascript">
 
         function buttonFunction() {
@@ -66,21 +67,24 @@ class StringGenerator(object):
           margin: 0 auto;
           font-size: 200%;
 
+
         }
+
 
         </style>
         </head>
         <body id="bod">
         <h1 id="one"><b>ROVER</b></h1>
         <h2 id="two">It's like Shazam... for scholars!</h2>
-        <button id="button1" onclick="buttonFunction()"><b>RECORD AUDIO</b></button>
-        <form action="upload" method="post" enctype="multipart/form-data">
-            filename: <input type="file" name="myFile" /><br />
-            <input type="submit" />
+        <button id="button1" onclick="buttonFunction()"><b>RECORD AUDIO</b></button><br>
+<form action="upload" method="post" enctype="multipart/form-data">
+<input type="file" name="myFile"/><br />
+<input type="submit"/>
         </form>
         </body>
         </html>
 """
+
 
     @cherrypy.expose
     def pagethree(self):
