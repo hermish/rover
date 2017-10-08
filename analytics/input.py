@@ -55,6 +55,7 @@ def transcribe_gcs(gcs_uri, sample_rate):
         sample_rate_hertz=sample_rate,
         language_code='en-US')
 
+
     response = client.recognize(config, audio)
     top_result = response.results[0]
     return str(top_result.alternatives[0].transcript)
@@ -148,6 +149,3 @@ def test():
     :return: None
     """
     pass
-
-
-test()
