@@ -80,11 +80,12 @@ def process_audio(credentials, bucket_name, filename, sample_rate, user_id):
     gcs_uri = create_gcs(bucket_name, filename)
     result = transcribe_gcs(gcs_uri, sample_rate)
 
+    # TODO: Remove after testing complete
     # Delete original audio file
-    client = storage.Client()
-    bucket = client.get_bucket(bucket_name)
-    blob = bucket.get_blob(filename)
-    blob.delete()
+    # client = storage.Client()
+    # bucket = client.get_bucket(bucket_name)
+    # blob = bucket.get_blob(filename)
+    # blob.delete()
 
     # Return transcript
     return result
