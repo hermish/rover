@@ -1,6 +1,11 @@
 'use strict'
 
-let log = console.log.bind(console),
+var config = {
+  projectId: 'roverapp-182218',
+  keyFilename: 'C:/Users/umaun/Downloads/RoverApp-9c7cceca7095.json'
+};
+
+var log = console.log.bind(console),
   id = val => document.getElementById(val),
   ul = id('ul'),
   gUMbtn = id('gUMbtn'),
@@ -11,6 +16,8 @@ let log = console.log.bind(console),
   counter=1,
   chunks,
   media;
+
+log("helpp")
 
 
 gUMbtn.onclick = e => {
@@ -49,6 +56,7 @@ start.onclick = e => {
   stop.removeAttribute('disabled');
   chunks=[];
   recorder.start();
+    window.alert("hola");
 }
 
 
@@ -56,6 +64,31 @@ stop.onclick = e => {
   stop.disabled = true;
   recorder.stop();
   start.removeAttribute('disabled');
+    console.log('heeeey');
+    window.alert("hey");
+
+    const Storage = require('@google-cloud/storage');
+
+    // Your Google Cloud Platform project ID
+    const projectId = 'roverapp-182218';
+
+    // Instantiates a client
+    const storage = Storage({
+      projectId: projectId,
+    });
+
+    // The name for the new bucket
+    const bucketName = 'my-new-bucket2';
+
+    // Creates the new bucket
+    storage
+      .createBucket(bucketName)
+      .then(() => {
+        console.log(`Bucket ${bucketName} created.`);
+      })
+      .catch(err => {
+        console.error('ERROR:', err);
+      });
 }
 
 
@@ -71,8 +104,11 @@ function makeLink(){
   mt.src = url;
   hf.href = url;
   hf.download = `${counter++}${media.ext}`;
-  hf.innerHTML = `donwload ${hf.download}`;
+  hf.innerHTML = `download ${hf.download}`;
   li.appendChild(mt);
   li.appendChild(hf);
   ul.appendChild(li);
 }
+
+
+

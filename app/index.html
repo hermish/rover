@@ -1,48 +1,72 @@
 <!DOCTYPE html>
 <!--<script src="rover.js"></script>-->
 <script src="//www.WebRTC-Experiment.com/RecordRTC.js"></script>
+<script src="recorder.js"></script>
 <div id = "title" align = "middle">
 <h1> Rover </h1>
 </div>
 <div id = "upload">
 <p>Upload a pre-recorded audio file...</p>
+    <input type="file" accept="audio/*;capture=microphone">
 
 </div>
 
 <div id = "record">
     <p>... or record audio now.</p>
-    <button onclick="startRec()">Start recording</button>
-    <button onclick="endRec()">Finish recording</button>
+    <button id="startRec">Start recording</button>
+    <button id="endRec">Finish recording</button>
+    <button id="upload">Upload recording</button>
 </div>
 
 <audio id="player" controls></audio>
+
+<a id="download">Download
+<button id="stop">Stop
+    
 <script>
-    
-    
+    function createAudioElement(blobUrl) {
+    const downloadEl = document.createElement('a');
+    downloadEl.style = 'display: block';
+    downloadEl.innerHTML = 'download';
+    downloadEl.download = 'audio.ogg';
+    downloadEl.href = blobUrl;
+    const audioEl = document.createElement('audio');
+    audioEl.controls = true;
+    const sourceEl = document.createElement('source');
+    sourceEl.src = blobUrl;
+    sourceEl.type = 'audio/ogg';
+    audioEl.appendChild(sourceEl);
+    document.body.appendChild(audioEl);
+    document.body.appendChild(downloadEl);
+}
 
-    var player = document.getElementById('player');
-
-    var handleSuccess = function(stream) {
-    if (window.URL) {
-      player.src = window.URL.createObjectURL(stream);
-    } else {
-      player.src = stream;
-    }
+// request permission to access audio stream
+navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+    // store streaming data chunks in array
+    const chunks = [];
+    // create media recorder instance to initialize recording
+    const recorder = new MediaRecorder(stream);
+    // function to be called when data is received
+    recorder.ondataavailable = e => {
+      // add stream data to chunks
+      chunks.push(e.data);
+      // if recorder is 'inactive' then recording has finished
+      if (recorder.state == 'inactive') {
+          // convert stream data chunks to a 'webm' audio format as a blob
+          const blob = new Blob(chunks, { type: 'audio/ogg' });
+          // convert blob to URL so it can be assigned to a audio src attribute
+          createAudioElement(URL.createObjectURL(blob));
+          blob.download;
+      }
     };
+    // start recording with 1 second time between receiving 'ondataavailable' events
+    recorder.start(1);
+    // setTimeout to stop recording after 4 seconds
+    setTimeout(() => {
+        // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
+        recorder.stop();
+    }, 10000);
+  }).catch(console.error);
     
-    var options = {mimeType: 'audio/webm;codecs=vp9'}    
-    mediaRecorder = new MediaRecorder(stream, options)
+    </script>
 
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-      .then(handleSuccess)
-    
-    function startRec() {
-        window.alert("started recording")
-        mediaRecorder.start();
-    }
-    
-    function endRec() {
-        window.alert("stopped recording")
-        mediaRecorder.stop();
-    }
-</script>
