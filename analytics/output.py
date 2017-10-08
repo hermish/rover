@@ -1,4 +1,5 @@
 import scholarly
+import praw
 
 
 def main(func):
@@ -29,6 +30,38 @@ def return_scholar(parsed, max_results):
             summary['title'], summary['author'], summary['abstract'], summary['url']])
         max_results -= 1
     return list_of_articles
+
+
+# def return_reddit(parsed, max_results):
+#     read_credentials =
+#
+#
+# def read_credentials(file_name):
+#     """
+#     Reads and return API credentials from a text file.
+#     :param file_name: (str) the name of the file which hold this information
+#     :return: [str] the client_id, secret and agent
+#     """
+#     data = open(file_name)
+#     information = [line.rstrip() for line in data]
+#     return information
+#
+#
+# def scrape_data(client_id, secret, agent, extractor):
+#     """
+#     Creates and returns a generator which provides a sequence of outputs to be written.
+#     :param client_id: (str) client id for the Reddit API
+#     :param secret: (str) client secret for the Reddit API
+#     :param agent: (str) user agent description
+#     :param extractor: function which extracts the desired information from reddit
+#     :return: a generator which yields
+#     """
+#     reddit = praw.Reddit(client_id=client_id,
+#                          client_secret=secret,
+#                          user_agent=agent)
+#     return extractor(reddit)
+
+
 
 
 @main

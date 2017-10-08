@@ -1,12 +1,20 @@
 import random
 import string
 import cherrypy
+import time
+import io
+
 
 import sys
 sys.path.insert(0, '../analytics')
-from analytics import test
+from analytics import test, main
+from input import upload_audio
+
+BUCKET_NAME = 'rover1'
+CREDENTIALS = '../credentials/RoverApp-2c2a3600d6d9.json'
 
 class StringGenerator(object):
+
     @cherrypy.expose
     def index(self):
 
@@ -79,7 +87,7 @@ class StringGenerator(object):
         <button id="button1" onclick="buttonFunction()"><b>RECORD AUDIO</b></button><br>
 <form action="upload" method="post" enctype="multipart/form-data">
 <input type="file" name="myFile"/><br />
-<input type="submit"/>
+<input type="submit" onclick="buttonFunctionTwo()"s/>
         </form>
         </body>
         </html>
@@ -242,26 +250,17 @@ class StringGenerator(object):
 
     @cherrypy.expose
     def upload(self, myFile):
-        out = """<html>
-        <body>
-            myFile length: %s<br />
-            myFile filename: %s<br />
-            myFile mime-type: %s
-        </body>
-        </html>"""
-
-        # Although this just counts the file length, it demonstrates
-        # how to read large files in chunks instead of all at once.
-        # CherryPy reads the uploaded file into a temporary file;
-        # myFile.file.read reads from that.
-        size = 0
+        file_name = 'f' + str(int(time.time())) + '.flac'
+        write_file = io.open(file_name, 'wb')
         while True:
             data = myFile.file.read(8192)
+            write_file.write(data)
             if not data:
                 break
-            size += len(data)
+        read_file = io.open(file_name, 'rb')
 
-        return out % (size, myFile.filename, myFile.content_type)
+        upload_audio(CREDENTIALS, BUCKET_NAME, file_name, read_file)
+        main(BUCKET_NAME, file_name, 44100, 0)
 
 
 if __name__ == '__main__':
