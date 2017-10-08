@@ -24,6 +24,19 @@
 <button id="stop">Stop
     
 <script>
+    
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+        console.log("all good!");
+    } else {
+        console.log('The File APIs are not fully supported in this browser.');
+    };
+    
+    const Storage = require('@google-cloud/storage');
+    const storage = Storage({
+        keyFilename: 'C:/Users/umaun/Downloads/RoverApp-9c7cceca7095.json'
+    });
+    
+    
     function createAudioElement(blobUrl) {
     const downloadEl = document.createElement('a');
     downloadEl.style = 'display: block';
@@ -40,8 +53,8 @@
     document.body.appendChild(downloadEl);
 }
 
-// request permission to access audio stream
-navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+    // request permission to access audio stream
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
     // store streaming data chunks in array
     const chunks = [];
     // create media recorder instance to initialize recording
@@ -56,17 +69,23 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
           const blob = new Blob(chunks, { type: 'audio/ogg' });
           // convert blob to URL so it can be assigned to a audio src attribute
           createAudioElement(URL.createObjectURL(blob));
-          blob.download;
+          
+          // blob.download;
       }
     };
     // start recording with 1 second time between receiving 'ondataavailable' events
-    recorder.start(1);
+    recorder.start(0.0625);
     // setTimeout to stop recording after 4 seconds
     setTimeout(() => {
         // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
         recorder.stop();
     }, 10000);
   }).catch(console.error);
+    
+    var uploadBtn = document.getElementById("upload");
+    uploadBtn.addEventListener('click', function(e) {
+        
+    })
     
     </script>
 
