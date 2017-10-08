@@ -1,7 +1,11 @@
 import random
 import string
-from analytics import test
 import cherrypy
+
+import sys
+sys.path.insert(0, '../analytics')
+from analytics import test
+
 
 
 class StringGenerator(object):
