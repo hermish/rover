@@ -1,4 +1,5 @@
 import os
+import io
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
@@ -7,7 +8,6 @@ from google.cloud import language
 
 
 ENV_VAR = 'GOOGLE_APPLICATION_CREDENTIALS'
-
 
 
 def make_verbose(before, after):
@@ -56,7 +56,6 @@ def transcribe_gcs(gcs_uri, sample_rate):
         sample_rate_hertz=sample_rate,
         language_code='en-US')
 
-
     response = client.recognize(config, audio)
     top_result = response.results[0]
     return str(top_result.alternatives[0].transcript)
@@ -82,15 +81,29 @@ def process_audio(credentials, bucket_name, filename, sample_rate, user_id):
     gcs_uri = create_gcs(bucket_name, filename)
     result = transcribe_gcs(gcs_uri, sample_rate)
 
-    # TODO: Remove after testing complete
     # Delete original audio file
-    # client = storage.Client()
-    # bucket = client.get_bucket(bucket_name)
-    # blob = bucket.get_blob(filename)
-    # blob.delete()
+    client = storage.Client()
+    bucket = client.get_bucket(bucket_name)
+    blob = bucket.get_blob(filename)
+    blob.delete()
 
     # Return transcript
     return result
+
+
+def upload_audio(credentials, bucket_name, filename, file):
+    """
+    Uploads a file to a given Cloud Storage bucket and returns the public url
+    to the new object.
+    """
+    # Set stage
+    os.environ[ENV_VAR] = credentials
+
+    # Upload
+    client = storage.Client()
+    bucket = client.get_bucket(bucket_name)
+    blob = bucket.blob(filename)
+    blob.upload_from_file(file, content_type='audio/flac')
 
 
 def run_analyses(text, link_type):
@@ -149,4 +162,5 @@ def test():
     Main method mostly for testing
     :return: None
     """
-    pass
+    upload_audio('../credentials/RoverApp-2c2a3600d6d9.json', 'rover1', 'sample_up.flac', file)
+

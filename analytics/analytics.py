@@ -21,6 +21,7 @@ def main(bucket_name, filename, sample_rate, user_id):
     list_of_articles = return_scholar(keywords, NUM_ARTICLES)
     return list_of_articles
 
+
 def test():
     result = main(SAMPLE_BUCKET, SAMPLE_FILE2, 44100, 0)
     return result
