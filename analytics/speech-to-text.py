@@ -143,10 +143,13 @@ def terms_and_links(entities, link_type):
 
 @main
 def run():
+    """
+    Main method mostly for testing
+    :return: None
+    """
     # output = process_audio(SAMPLE_BUCKET, SAMPLE_FILE, 0)
-    os.environ[ENV_VAR] = CREDENTIALS
-    output = run_analyses(SAMPLE_STRING)
-    print(terms_and_links(output, QUERY))
-
+    # output = terms_and_links(run_analyses(SAMPLE_STRING), QUERY)
+    # print(output)
+    pass
 
 run()
