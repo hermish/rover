@@ -74,14 +74,17 @@ class StringGenerator(object):
         <h1 id="one"><b>ROVER</b></h1>
         <h2 id="two">It's like Shazam... for scholars!</h2>
         <button id="button1" onclick="buttonFunction()"><b>RECORD AUDIO</b></button>
+        <form action="upload" method="post" enctype="multipart/form-data">
+            filename: <input type="file" name="myFile" /><br />
+            <input type="submit" />
+        </form>
         </body>
         </html>
 """
 
     @cherrypy.expose
     def pagethree(self):
-
-         variable = test()
+        variable = test()
 
         titlea = variable[0][0]
         titleb = variable[1][0]
@@ -233,7 +236,28 @@ class StringGenerator(object):
         </html>
         """
 
+    @cherrypy.expose
+    def upload(self, myFile):
+        out = """<html>
+        <body>
+            myFile length: %s<br />
+            myFile filename: %s<br />
+            myFile mime-type: %s
+        </body>
+        </html>"""
 
+        # Although this just counts the file length, it demonstrates
+        # how to read large files in chunks instead of all at once.
+        # CherryPy reads the uploaded file into a temporary file;
+        # myFile.file.read reads from that.
+        size = 0
+        while True:
+            data = myFile.file.read(8192)
+            if not data:
+                break
+            size += len(data)
+
+        return out % (size, myFile.filename, myFile.content_type)
 
 
 if __name__ == '__main__':
