@@ -162,5 +162,11 @@ def test():
     Main method mostly for testing
     :return: None
     """
-    upload_audio('../credentials/RoverApp-2c2a3600d6d9.json', 'rover1', 'sample_up.flac', file)
+    import os
 
+    cwd = os.getcwd()  # Get the current working directory (cwd)
+    files = os.listdir(cwd)  # Get all the files in that directory
+    print("Files in '%s': %s" % (cwd, files))
+
+    file = io.open('f1507474912.flac', 'rb')
+    upload_audio('../credentials/RoverApp-2c2a3600d6d9.json', 'rover1', 'f1507474912.flac', file)
