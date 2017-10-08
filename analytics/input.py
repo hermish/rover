@@ -5,12 +5,8 @@ from google.cloud.speech import types
 from google.cloud import storage
 from google.cloud import language
 
-CREDENTIALS = '../credentials/RoverApp-2c2a3600d6d9.json'
+
 ENV_VAR = 'GOOGLE_APPLICATION_CREDENTIALS'
-SAMPLE_BUCKET = 'rover1'
-SAMPLE_FILE = 'audio-file.flac'
-SAMPLE_STRING = 'several tornadoes touched down as a line of severe thunderstorms swept through Colorado on Sunday'
-QUERY = 'wikipedia_url'
 
 
 def make_verbose(before, after):
@@ -46,7 +42,7 @@ def main(func):
     return wrapped
 
 
-def transcribe_gcs(gcs_uri):
+def transcribe_gcs(gcs_uri, sample_rate):
     """
     :param gcs_uri: (str) the Google Cloud Storage URI 'gcs://'
     :return: (str) the most likely transcript of the sort audio
@@ -56,7 +52,7 @@ def transcribe_gcs(gcs_uri):
     audio = types.RecognitionAudio(uri=gcs_uri)
     config = types.RecognitionConfig(
         encoding=enums.RecognitionConfig.AudioEncoding.FLAC,
-        sample_rate_hertz=44100,
+        sample_rate_hertz=sample_rate,
         language_code='en-US')
 
     response = client.recognize(config, audio)
@@ -73,16 +69,16 @@ def create_gcs(bucket, filename):
     return 'gs://' + bucket + '/' + filename
 
 
-def process_audio(bucket_name, filename, user_id):
+def process_audio(credentials, bucket_name, filename, sample_rate, user_id):
     """
     :param bucket_name: (str) the name of the bucket the file is in
     :param filename: (str) the filename of the audio clip
     :return: (str) the most likely transcript of the sort audio
     """
     # Derive transcript
-    os.environ[ENV_VAR] = CREDENTIALS
+    os.environ[ENV_VAR] = credentials
     gcs_uri = create_gcs(bucket_name, filename)
-    result = transcribe_gcs(gcs_uri)
+    result = transcribe_gcs(gcs_uri, sample_rate)
 
     # Delete original audio file
     client = storage.Client()
@@ -94,15 +90,18 @@ def process_audio(bucket_name, filename, user_id):
     return result
 
 
-def run_analyses(text):
+def run_analyses(text, link_type):
     """
     :param text: (str) paragraph to be analyzed
+    :param link_type: (str) the type of the link that will be returned, for example,
+        'wikipedia_url'
     :return: results of important analyses
     """
     client = language.Client()
     document = client.document_from_text(text)
     entities = find_entities(document)
-    return entities
+    output = terms_and_links(entities, link_type)
+    return output
 
 
 def find_entities(text_doc):
@@ -127,8 +126,10 @@ def terms_and_links(entities, link_type):
     """
     :param entities: [(str, str, float, dict)] containing entity, type, salience and
         relevant links for each key word in the sentence
+    :param link_type: (str) the type of the link that will be returned, for example,
+        'wikipedia_url'
     :return: ([str], [str]) list consisting of words sorted from most to least relevant,
-        containing relevant wikipedia links
+        and then a list containing relevant links of the specified type
     """
     sorted_entities = sorted(entities, key=lambda entity: entity[2], reverse=True)
     words = [entity[0] for entity in sorted_entities]
@@ -140,15 +141,12 @@ def terms_and_links(entities, link_type):
 
 
 @main
-def run():
+def test():
     """
     Main method mostly for testing
     :return: None
     """
-    # output = process_audio(SAMPLE_BUCKET, SAMPLE_FILE, 0)
-    # output = terms_and_links(run_analyses(SAMPLE_STRING), QUERY)
-    output = return_scholar(['machine', 'learning', 'communism'], 3)
-    print(output)
+    pass
 
 
-run()
+test()
